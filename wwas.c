@@ -283,7 +283,7 @@ number(void)
 int
 issymchar(int c)
 {
-	return isalnum(c) || c == '@' || c == '.';
+	return isalnum(c) || c == '_' || c == '.';
 }
 
 Token
