@@ -414,9 +414,15 @@ combine(int op, word w1, word w2)
 	case 0:
 		return w2;
 	case '+':
-		return w1 + w2 & W;
+		w1 += w2;
+		if(w1 & 0200000)
+			w1 += 1;
+		return w1 & W;
 	case '-':
-		return w1 - w2 & W;
+		w1 += ~w2 & W;
+		if(w1 & 0200000)
+			w1 += 1;
+		return w1 & W;
 	case ' ':
 	case '!':
 		return (w1 | w2) & W;
