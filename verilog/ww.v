@@ -109,7 +109,7 @@ module ww(
 		{16{ac_to_bus}}&ac;
 	wire [0:15] check_bus =
 		{11{pc_to_check}}&pc |
-		{16{storage_to_check}}&out_ff |
+		{16{storage_to_check}}&(out_ff|out_ts) |
 		{16{ac_to_check}}&ac;
 
 
@@ -360,8 +360,9 @@ module ww(
 	 ****************************/
 
 	/* 201 - Storage Switch */
-	// actually this was only 5 bits originally but then the check doesn't make sense
-	// unless it was only 5 bits as well...
+	// Actually this should be 5 bits only but then the check
+	// gives trouble if the higher bits aren't all 0.
+	// Maybe on ss_to_bus the higher bits are all forced to 0 or 1?
 	reg [5:15] ss;		// FF 201.01-05
 	wire ss_from_bus;	// GT 201.01	c
 	wire ss_to_bus;		// GT 201.02	c
@@ -776,6 +777,7 @@ module ww(
 	wire cr_from_bus;	// GT 601.01 c
 	wire transfer_check;	// c
 	reg check_cr = 0;	// not sure what this is
+	// not using that yet because checking doesn't work with TD
 	wire cr_alarm = (|cr)&check_cr;
 	always @(posedge clk) begin
 		// not sure about this, but we need a delay here
