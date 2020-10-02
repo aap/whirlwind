@@ -252,7 +252,6 @@ module ww(
 	wire shift_right_tp1 = cs_sr;
 	wire divide_tp2 = cs_dv;
 	wire special_add_tp3 = cs_sa;
-	// TODO: how can this happen on sl?
 	wire arithmetic_check_tp3 = cs_ad | cs_ca | cs_su | cs_cs | cs_sl;
 	wire clear_ac_tp6 = cs_ca | cs_cs;
 	wire clear_ac_tp3 = cs_dv;
@@ -660,7 +659,7 @@ module ww(
 	wire product_sign = product_sign_ctl & sign_control;	// GT 304.04	c
 	wire ac_sign = ac_sign_ctl & ac[0];		// GT 304.05	c
 	wire ar_sign = ar_sign_ctl & ar[0];		// GT 304.07	c
-	wire change_control = compare_ctl & ac[0];	// GT 304.08	c
+	wire change_control = compare_ctl & ~ac[0];	// GT 304.08	c
 	always @(posedge clk) begin
 		if(complement_ac | complement_ar) sign_control <= ~sign_control;
 	end
@@ -680,7 +679,7 @@ module ww(
 		if(sc_add) sc <= sc + 1;
 		// TODO: also these were maintenance switches
 		if(sc_reset_multiply) sc <= 5'o22;
-		if(sc_reset_divide) sc <= 5'o21;
+		if(sc_reset_divide) sc <= 5'o20;
 	end
 
 	/* 306 - Multiply */
